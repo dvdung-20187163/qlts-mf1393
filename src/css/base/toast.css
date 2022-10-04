@@ -1,0 +1,38 @@
+
+.toast {
+    position: fixed;
+    display: flex;
+    align-items: center;
+    bottom: 15%;
+    right: 15%;
+    border-radius: 4px;
+    box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.15);
+    min-width: 300px;
+    margin: 6px 0;
+    z-index: 6;
+    background-color: #fff;
+}
+
+.toast__icon {
+    width: 24px;
+    height: 24px;
+    font-size: 20px;    
+    padding: 0 12px 0 16px;
+}
+
+
+.icon-check {
+    background-image: url(../../assets/icon/circle-check-regular.svg);
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.toast__text {
+    line-height: 48px ;
+    text-align: left;
+}
+
+.show-toast {
+    transition: 1s ease-in-out;
+
+}

@@ -1,0 +1,125 @@
+.btn {
+    height: 36px;
+    min-width: 100px;
+    border-radius: 3px;
+    border: none;
+    cursor: pointer;
+    outline: none;
+}
+
+.btn-only-icon {
+    height: 36px;
+    width: 36px;
+    border-radius: 3px;
+    border: none;
+    cursor: pointer;
+    outline: none; 
+    box-shadow: 0 2px 6px rgba(0, 0, 0, .16);
+    background-color: #fff;
+}
+
+.main-btn, .main-btn--disable {
+    position: relative;
+    color: #fff;
+    padding-right: 13px;
+    padding-left: 13px;
+    background-color: #1aa4c8;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, .16);
+}
+.btn-only-icon:hover {
+    background-color: #EEEEEE;
+}
+
+.btn-only-icon:focus {
+    background-color: #E0E0E0;
+}
+
+.main-btn:hover {
+    background-color: #0582a2;
+}
+
+.main-btn:active {
+    background-color: #28b7dc;
+}
+
+.main-btn:focus {
+    background-color: #1aa4c8;
+}
+
+.main-btn--disable {
+    opacity: 0.4;
+    cursor: unset;
+}
+
+.sub-btn, .sub-btn--disable {
+    color: #1aa4c8;
+    background-color: #fff; 
+    border: 1px solid #1aa4c8;
+}
+
+.sub-btn:hover {
+    background-color: #d1edf4; 
+} 
+
+.sub-btn:active {
+    background-color: #e8f2f4; 
+}
+
+.sub-btn:focus {
+    background-color: #e8f2f4;
+}
+
+.sub-btn--disable {
+    opacity: 0.4;
+    cursor: unset;
+}
+
+.outline-btn, .outline-btn--disable {
+    background-color: #fff;
+    border: 1px solid #afafaf; 
+    color: #000;
+}
+
+.outline-btn:hover {
+    color: #fff;
+    background-color: #1aa4c8;
+}
+
+.outline-btn:active {
+    color: #fff;
+    background-color: #26b9df;
+}
+
+.outline-btn:focus {
+    color: #fff;
+    background-color: #2ac7f0;
+}
+
+.outline-btn--disable {
+    opacity: 0.4;
+    cursor: unset;
+}
+
+/* btn icon plus */
+
+/* .icon-btn {
+    padding-left: 28px;
+    background-repeat: no-repeat;
+    background-position: 12px center;
+    background-size: 12px 12px;
+} */
+
+.icon-plus {
+    position: absolute;
+    top: 14px;
+    left: 12px;
+    width: 15px;
+    height: 15px;
+    background: url("../../assets/icon/qlts-icon.svg") no-repeat -204px -424px;
+}
+
+/* .icon-filter {
+    width: 24px;
+    height: 24px;
+    background: url("../../assets/icon/qlts-icon.svg") no-repeat -243px -69px;
+} */

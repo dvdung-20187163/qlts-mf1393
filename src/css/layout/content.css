@@ -1,0 +1,44 @@
+.page-content {
+    width: 100%;
+    padding: 13px 20px 16px 20px;
+    background-color: #f4f7ff;
+    height: calc(100% - 44px);
+    box-sizing: border-box;
+    /* overflow: scroll; */
+}
+
+.content-box1 {
+    height: 36px;
+   
+}
+
+.content-box1__left {
+    float: left;
+    display: flex;
+}
+
+.content-box1__right {
+    float: right;
+    display: flex;
+    height: 36px;
+    align-items: center;
+}
+
+.content-table {
+    margin-top: 13px;
+    border: 1px solid #afafaf;
+    border-radius: 3px;
+}
+
+
+.icon-excel {
+    width: 36px;
+    height: 36px;
+    background: url('../../assets/icon/qlts-icon.svg') no-repeat -284px -103px;
+}
+
+.icon-delete {
+    width: 36px;
+    height: 36px;
+    background: url('../../assets/icon/qlts-icon.svg') no-repeat -460px -103px;
+}

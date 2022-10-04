@@ -1,0 +1,134 @@
+.modal {
+    background-color: rgba(0, 0, 0, 0.55) !important;
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+    top: 0;
+    right: 0;
+    z-index: 2;
+}
+
+.form-asset {
+    position: fixed;
+    top: 7%;
+    left: calc(50% - 400px);
+    width: 800px;
+    background-color: #fff;
+    padding-top: 20px;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2);
+    
+}
+
+.form-asset__body {
+    padding: 0 16px;
+}
+
+.form-icon--selecte {
+    position: absolute;
+    right: 10px;
+    display: flex;
+    flex-direction: column;
+}
+
+.form-icon--candidate {
+    height: 18px;
+    width: 18px;
+    position: absolute;
+    right: 8px;
+    background: url('../../assets/icon/qlts-icon.svg') no-repeat -287px -67px;
+}
+
+.double-input--1-2 {
+    display: grid;
+    grid-template-columns: 33.33% calc(100% - 33.33%);
+    margin-bottom: 16px;
+}
+
+.three-input--1-1-1 {
+    display: grid;
+    grid-template-columns: 33.33% 33.33% 33.34%;
+    margin-bottom: 16px;
+}
+
+.form-asset__header {
+    position: relative;
+}
+
+.form-asset__title {
+    padding-left: 16px;
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 20px;
+}
+
+.form-asset__icon {
+    position: absolute;
+    top: 0;
+    right: 16px;
+    border-radius: 50%;
+    width: 32px;
+    height: 32px;
+    background: url('../../assets/icon/qlts-icon.svg') no-repeat -368px -280px;
+    cursor: pointer;
+}
+
+.form-asset__icon:hover {
+    background-color: #afafaf;
+    border-radius: 50%;
+    width: 32px;
+    height: 32px;
+}
+
+.form-asset__footer {
+    display: flex;
+    justify-content: end;
+    background-color: #f5f5f5;
+    height: 52px;
+    align-items: center;
+    padding: 0 16px;
+    border-bottom-left-radius: 3px;
+    border-bottom-right-radius: 3px;
+}
+
+.btn-select {
+    outline: none;
+    border: none;
+    margin: 0;
+    padding: 0;
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator {
+    background: url('../../assets/icon/qlts-icon.svg') no-repeat -287px -67px;
+    padding-right: 8px;
+    font-family: url('../../assets/font/dist/86035194a2ecaec2e33d6deae8ecf2ab.eot');
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+  text-align: right;
+  padding-right: 28px;
+  font-family: url('../../assets/font/dist/86035194a2ecaec2e33d6deae8ecf2ab.eot');
+  padding-right: 10px;
+}
+
+.btn__tab {
+    opacity: 0;
+    margin-right: -16px;
+}
+
+.date-picker {
+    width: 100% !important;
+    height: 36px !important;
+    border-radius: 2.5px !important;
+    outline: none !important;
+    box-sizing: border-box !important;
+
+}

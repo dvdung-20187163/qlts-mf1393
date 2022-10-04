@@ -1,0 +1,139 @@
+#header {
+    height: 44px;
+    background-color: #fff;
+    width: 100%;
+    display: flex;
+    align-items: center;
+}
+
+.header__left {
+    display: flex;
+    align-items: center;
+    background-color: #1c3048;
+    height: 44px;
+    cursor: pointer;
+}
+
+.header__icon-home {
+    width: 66px;
+    height: 44px;
+    background: url('../../assets/icon/qlts-icon.svg') no-repeat -5px -676px;
+}
+
+.header__name-app {
+    font-size: 22px;
+    font-weight: 700;
+    color: #fff;
+    margin-right: 24px;
+    height: 44px;
+    line-height: 44px;
+    width: 130px;
+}
+
+.header__centre {
+    width: calc(100%);
+}
+
+.header__title {
+    padding-left: 20px;
+    font-weight: 700;
+}
+
+.header__right {
+    display: flex;
+    align-items: center;
+}
+
+.header__sub-title {
+    font-weight: 500;
+    color: #001031;
+    margin-right: 20px;
+    min-width: 74px;
+}
+
+.header__year {
+    display: flex;
+    align-items: center;
+    padding: 0 8px 0 12px;
+    height: 30px;
+    background-color: rgba(26, 164, 200, .2);
+    border-radius: 3px;
+    margin-right: 16px;
+}
+
+.year__title {
+    
+}
+
+.year__select {
+    font-weight: 700;
+    margin-left: 14px;
+    margin-right: 13px;
+
+}
+
+.year__icon-select {
+    position: relative;
+}
+
+.select-icon--up {
+    height: 5px;
+    width: 7px;
+    background: url('../../assets/icon/qlts-icon.svg') no-repeat -28px -338px;
+    cursor: pointer;
+}
+
+.select-icon--down {
+    height: 5px;
+    width: 7px;
+    background: url('../../assets/icon/qlts-icon.svg') no-repeat -72px -338px;
+    cursor: pointer;
+}
+
+.header__combo-icon {
+    display: flex;
+    align-items: center;
+}
+
+.icon-size {
+    height: 24px;
+    width: 24px;
+    background-color: #fff;
+    margin-right: 20px;
+    cursor: pointer;
+}
+
+
+.icon-notifi {
+    background: url('../../assets/icon/qlts-icon.svg') no-repeat -328px -107px;
+}
+
+.icon-grid {
+    background: url('../../assets/icon/qlts-icon.svg') no-repeat -195px -19px;
+}
+
+.icon-question {
+    background: url('../../assets/icon/qlts-icon.svg') no-repeat -63px -63px;
+
+}
+
+.icon-box-user {
+    display: flex;
+    align-items: center;
+    margin-right: 23px;
+}
+
+.icon-user {
+    background: url('../../assets/icon/qlts-icon.svg') no-repeat -20px -19px;
+    width: 24px;
+    height: 24px;
+    margin-right: 8px;
+    cursor: pointer;
+}
+
+.select-icon--down {
+    width: 7px;
+    height: 5px;
+    cursor: pointer;
+}
+

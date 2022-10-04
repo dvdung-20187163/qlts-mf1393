@@ -1,0 +1,150 @@
+#navbar {
+    background-color: #1c3048;
+    box-shadow: inset 0 3px 6px rgba(0, 0, 0, .16);
+    position: relative;
+    height: 100vh;
+}
+.navbar__top {
+    display: flex;
+    align-items: center;
+    background-color: #1c3048;
+    height: 44px;
+    cursor: pointer;
+    position: relative;
+}
+
+.navbar__logo {
+    width: 66px;
+    height: 44px;
+    background: url('../../assets/icon/qlts-icon.svg') no-repeat -5px -676px;
+}
+
+.navbar__name-app {
+    font-size: 22px;
+    font-weight: 700;
+    color: #fff;
+    margin-right: 24px;
+    height: 44px;
+    line-height: 44px;
+    width: 130px;
+    
+}
+
+.navbar-list {
+    /* display: flex; */
+    /* flex-direction: column; */
+    background-color: #1c3048;
+    padding: 0 11px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.navbar-item {
+    display: flex;
+    height: 40px;
+    width: 100%;
+    border-radius: 3px;
+    align-items: center;
+    cursor: pointer;
+    opacity: .54;
+    z-index: 100;
+    margin-top: 2px;
+    text-decoration: none;
+}
+
+.navbar-item:hover {
+    background-color: #1aa4c8;
+    opacity: 1;
+}
+
+.navbar-icon {
+    width: 44px;
+    height: 40px;
+    border-radius: 6px;
+    position: relative;
+}
+
+.icon-dasshboard {
+    background: url('../../assets/icon/qlts-icon.svg') no-repeat -10px -144px;
+}
+
+.icon-asset {
+    background: url('../../assets/icon/qlts-icon.svg') no-repeat -54px -144px;
+}
+
+.icon-road {
+    background: url('../../assets/icon/qlts-icon.svg') no-repeat -99px -144px;
+}
+
+.icon-tool {
+    background: url('../../assets/icon/qlts-icon.svg') no-repeat -142px -144px;
+}
+
+.icon-category {
+	background: url('../../assets/icon/qlts-icon.svg') no-repeat -186px -144px;
+}
+
+.icon-search2 {
+    background: url('../../assets/icon/qlts-icon.svg') no-repeat -230px -144px;
+}
+
+.icon-report {
+    background: url('../../assets/icon/qlts-icon.svg') no-repeat -318px -144px;
+}
+
+.navbar-title {
+    width: 154px;
+    color: #fff;
+    height: 40px;
+    line-height: 40px;
+    padding-left: 6px;
+    box-sizing: border-box;
+}
+
+.navbar-title__icon-down {
+    height: 40px;
+    width: 23px;
+    float: right;
+    background: url('../../assets/icon/qlts-icon.svg') no-repeat -158px -277px;
+}
+
+.navbar-explore {
+    position: relative;
+    height: 38px;
+    width: 100%;
+    border-top: 1px solid rgba(255, 255, 255, 0.54);  
+    display: flex;
+    align-items: center;
+    padding: 0 18px;
+    box-sizing: border-box;
+    position: absolute;
+    bottom: 0;
+    justify-content: end;
+}
+
+.navbar-explore--icon {
+    width: 22px;
+    height: 22px;
+    cursor: pointer;
+    opacity: 0.54;
+}
+
+.navbar-explore--icon:hover {
+    opacity: 1;
+}
+
+.icon-left {
+    background: url('../../assets/icon/qlts-icon.svg') no-repeat -285px -417px;
+    padding-left: 11px;
+}
+
+.rotate_180 {
+    transform: rotate(180deg);
+    transition: 0.5s linear;
+}
+
+.explore {
+    margin-left: -154px;
+    opacity: 0;
+    transition: 1s ease-in-out;
+}

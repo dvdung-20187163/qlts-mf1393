@@ -1,0 +1,45 @@
+.combobox, .combobox-w100 {
+    height: 36px;
+    width: 219px;
+    background-color: #fff;
+    display: flex;
+    align-items: center;
+    border-radius: 2.5px;   
+    border: 1px solid #afafaf;
+    overflow: hidden;
+    box-sizing: border-box;
+    position: relative;
+}
+
+.combobox-w100 {
+    width: 100%;
+}
+
+.combobox:hover, .combobox:focus, .combobox-w100:hover, .combobox-w100:focus {
+    border-color: #0078d7;
+}
+
+.combobox-icon {
+    outline: none;
+    border: none;
+    cursor: pointer;
+}
+
+.combobox-text {
+    width: calc(219px - 19px - 39px);
+    padding-left: 9px;
+    /* box-sizing: border-box; */
+}
+
+.icon-filter {
+    width: 17px;
+	height: 16px;
+    margin-left: 6px;
+    background: url('../../assets/icon/qlts-icon.svg') no-repeat -243px -69px;
+}
+
+.combobox__box-selecte {
+    width: 7px;
+    
+}
+
