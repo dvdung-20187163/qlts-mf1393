@@ -32,23 +32,30 @@ export default {
     width: 100vw;
     height: 100vh;
 }
+
 body {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
+
 @font-face {
   font-family: MISA;
   src: url('./assets/font/roboto/Roboto-Regular.ttf');
 }
+
 #container {
   display: flex;
   
 }
+
 #main {
     display: flex;
     height: 100vh;
     width: 100%;
     flex-direction: column;
+}
+input {
+    font-family: MISA !important;;
 }
 </style>

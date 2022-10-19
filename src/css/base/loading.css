@@ -50,3 +50,24 @@
       transform: rotate(360deg);
     }
 }
+
+.noData {
+    position: fixed;
+    width: 100px;
+    height: 100px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-image: url('../../assets/img/no-data.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.noData::after {
+    position: absolute; 
+    content: "Không có dữ liệu";
+    bottom: -10px;
+    font-size: 13px;
+    
+}

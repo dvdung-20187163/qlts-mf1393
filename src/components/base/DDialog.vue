@@ -1,24 +1,30 @@
 <template>
     <div class="modal">
-        <div class="dialog" @click.stop>
-        <div class="dialog__main">
-            <div class="dialog__icon icon-warning"></div>
-            <div class="dialog__body"><span v-html="title"></span></div>
-        </div>
-        <div class="dialog__btn">
-            <button class="btn outline-btn" @click="noCancel" :class="{ 'display-none' : !activeBtn1 }">{{titleBtn1}}</button>
-            <button class="btn sub-btn ml-8" @click="noSave" :class="{ 'display-none' : !activeBtn2 }">{{titleBtn2}}</button>
-            <button class="btn main-btn ml-8" @click="cancel">{{titleBtn3}}</button>
-        </div>
+        <div class="dialog">
+            <div class="header" v-html="header"></div>
+            <div class="dialog__main">
+                <div class="dialog__icon icon-warning"></div>
+                <div class="dialog__body"><span v-html="title"></span></div>
+            </div>
+            <div class="dialog__btn">
+                <input type="text" ref="inputDialog" class="hidden">
+                <button class="btn outline-btn"  @click="noCancel" :class="{ 'display-none' : !activeBtn1 }">{{titleBtn1}}</button>
+                <button class="btn sub-btn ml-8"  @click="noSave" :class="{ 'display-none' : !activeBtn2 }">{{titleBtn2}}</button>
+                <button class="btn main-btn ml-8"  @click="cancel" @keydown.tab="focusInputDialog">{{titleBtn3}}</button>
+            </div>
     </div>
     </div>
 </template>
 
 <script>
+    
 export default {
     name: 'WorkspaceJsonDDialog',
 
     props: {
+        header: {
+            type: String
+        },
         title: {
             type: String
         },
@@ -46,12 +52,13 @@ export default {
     
     data() {
         return {
-            
+
         };
     },
 
     mounted() {
-        
+        this.$refs.inputDialog.focus()
+
     },
 
     methods: {
@@ -69,7 +76,7 @@ export default {
          * Author: DVDUNG (1/10/2022)
          */
         cancel(){
-            this.$parent.destroys();
+            this.$parent.destroyForm();
         },
 
         /**
@@ -78,7 +85,11 @@ export default {
          */
         noSave() {
             this.$parent.closeForm();
-        }
+        },
+
+        focusInputDialog() {
+            this.$refs.inputDialog.focus()
+        },
     },
 };
 </script>

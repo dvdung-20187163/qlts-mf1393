@@ -101,7 +101,7 @@
 input[type="date"]::-webkit-calendar-picker-indicator {
     background: url('../../assets/icon/qlts-icon.svg') no-repeat -287px -67px;
     padding-right: 8px;
-    font-family: url('../../assets/font/dist/86035194a2ecaec2e33d6deae8ecf2ab.eot');
+    font-family: url('../../assets/font/roboto/Roboto-Regular.ttf') !important;
 }
 
 input::-webkit-outer-spin-button,
@@ -115,7 +115,7 @@ input[type=number] {
   -moz-appearance: textfield;
   text-align: right;
   padding-right: 28px;
-  font-family: url('../../assets/font/dist/86035194a2ecaec2e33d6deae8ecf2ab.eot');
+  font-family: url('../../assets/font/roboto/Roboto-Regular.ttf') !important;
   padding-right: 10px;
 }
 
@@ -130,5 +130,13 @@ input[type=number] {
     border-radius: 2.5px !important;
     outline: none !important;
     box-sizing: border-box !important;
+}
 
+.font-default {
+    font-family: MISA;
+}
+
+.header-errors {
+    font-weight: 700;
+    font-size: 20px;
 }

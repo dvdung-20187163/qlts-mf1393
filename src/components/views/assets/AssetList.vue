@@ -1,11 +1,17 @@
 <template>
-    <div class="page-content">
+    <div class="page-content" 
+    @keyup.ctrl.f3="this.$refs.inputSearch.focus()"
+    >
         <!-- Thanh toolbar -->
         <div class="content-box1">
             <div class="content-box1__left">
                 <div class="box-input mr-10">
                     <div class="input-icon icon-search"></div>
-                    <input type="text" class="input input-search" placeholder="Search ....." v-model="keyword">
+                    <input ref="inputSearch" type="text"
+                     class="input input-search" 
+                     placeholder="Search ....." 
+                     v-model="keyword"
+                     @keyup.enter="selectPage(0)">
                 </div>
                 <div class="box-combobox mr-10">
                     <d-combobox 
@@ -23,19 +29,20 @@
                     keyCombobox="department_id"
                     DataComboboxName="department_name"
                     @getIdData="getIdDataDepartment"
+                    v-model:department_id="filterDepartmentID"
                     ></d-combobox>
                 </div>
             </div>
             <div class="content-box1__right">
-                <button class="btn main-btn pl-24" @click="btnAddAsset">Thêm tài sản
+                <button class="btn main-btn pl-24" @click="btnAddAsset" :class="{ 'btn__toolbar--disable' : isDisableBtnToolbar }">Thêm tài sản
                     <div class="icon-plus"></div>
                 </button>
-                <button class="btn-only-icon ml-11">
+                <button class="btn-only-icon ml-11" :class="{ 'btn__toolbar--disable' : isDisableBtnToolbar }">
                     <div class="icon-excel" @mouseover="upHereIconExport = true" @mouseleave="upHereIconExport = false">
                         <d-tool-tip v-show="upHereIconExport" class="mt-44" text="Xuất"></d-tool-tip>
                     </div>
                 </button>
-                <button class="btn-only-icon ml-11">
+                <button class="btn-only-icon ml-11" :class="{ 'btn__toolbar--disable' : isDisableBtnToolbar }">
                     <div class="icon-delete" @click="deleteAsset" @mouseover="upHereIconDelete = true" @mouseleave="upHereIconDelete = false">
                         <d-tool-tip v-show="upHereIconDelete" class="mt-44" text="Xóa"></d-tool-tip>
                     </div>
@@ -44,7 +51,6 @@
                 </div>
             </div>
         </div>
-
         <!-- Content table -->
         <div class="content-table">
             <table class="table">
@@ -70,15 +76,22 @@
                     <th class="text-align-right" style="width: 8px;">Giá trị còn lại</th>
                     <th class="text-align-centre" style="width: 100px;">Chức năng</th>
                 </thead>
-                <tbody>
+                <tbody ref="tbody">
                     <tr v-for="(asset,index) in assets" :key="asset.fixed_asset_id" 
                     @dblclick="rowDoubleClick(asset)" 
+                    v-contextmenu:contextmenu
+                    @click.right="rightClickRow(asset)"
                     :class="{ isSelectRow : filterCheckbox(asset.fixed_asset_id)}"
+                    tabindex="0" 
+                    @keyup.f2="rowDoubleClick(asset)"
+                    @keyup.down="$event.target.nextSibling.focus()"
+                    @keyup.up="$event.target.previousSibling.focus()"
                     >
                         <td class="text-align-centre" style="width: 13px;">
                             <input type="checkbox" class="checkbox-x" 
                             :value="asset.fixed_asset_id"
-                            v-model="listIdAsset">
+                            v-model="listIdAsset"
+                            tabindex="-1">
                         </td>
                         <td class="text-align-left">{{index + 1}}</td>
                         <td class="text-align-left">{{asset.fixed_asset_code}}</td>
@@ -87,20 +100,22 @@
                         <td class="text-align-left">{{asset.department_name}}</td>
                         <td class="text-align-right">{{asset.quantity}}</td>
                         <td class="text-align-right">
-                            {{ formatPrice(asset.cost) }}
+                            {{ formatMoney(asset.cost) }}
                         </td>
                         <td class="text-align-right">
-                            {{ formatPrice(asset.depreciation_rate *asset.cost/100) }}
+                            {{ formatMoney(asset.depreciation_rate *asset.cost/100) }}
                         </td>
                         <td class="text-align-right">
-                            {{ formatPrice(asset.cost-asset.depreciation_rate *asset.cost/100) }}
+                            {{ formatMoney(asset.cost-asset.depreciation_rate *asset.cost/100) }}
                         </td>
                         <td class="text-align-centre" style="width: 100px;">
                             <d-function-icon  @showFormChange="rowDoubleClick(asset)" @showFormDuplicate ="showFormDuplicate(asset)" ></d-function-icon>
                         </td>
                     </tr>
-
+                    
                 </tbody>
+                <button ref="focusRow" class="btn_keydown" @keyup.down="$event.target.previousSibling.children[0].focus()"></button>
+                <div></div>
                 <tfoot>
                     <tr class="row-slected">
                         <td colspan="6">
@@ -134,44 +149,34 @@
                                                 @click="selectPage(currentPage-1)"
                                                 />
                                             </div>
-                                            <!-- <button class="number-btn"
-                                                v-for="(pageNumber,index) in pageCount" :key="index"
-                                                @click="selectPage(pageNumber)"
-                                            >
-                                                <div>{{ pageNumber }}</div>
-                                            </button> -->
-                                            <!-- <button class="number-btn">1</button>
-                                            <button class="number-btn">2</button>
-                                            <button class="number-btn">3</button> -->
-                                            <!-- <span class="number-plus">...</span>
-                                            <button class="number-btn btn-10">10</button> -->
                                         </div>
-                                        <!-- <div class="page-number__last" 
-                                        @mouseover="upHerePageNumberLast = true" 
-                                        @mouseleave="upHerePageNumberLast = false"
-                                        @click="selectPage(this.currentPage+=1)">
-                                            <d-tool-tip v-show="upHerePageNumberLast" class="ml-16" text="Tới trang sau"></d-tool-tip>
-                                        </div> -->
                                     </div>
                                 </div>
                             </div>
                         </td>
-                        <td class="text-align-right fw-700" style="width: 60px;">12345</td>
+                        <td class="text-align-right fw-700" style="width: 60px;">{{ this.totalQuantity }}</td>
                         <td class="text-align-right fw-700" style="width: 100px;">
-                            {{ formatPrice(249000) }}
+                            {{ formatMoney(this.totalCost) }}
                         </td>
                         <td class="text-align-right fw-700" style="width: 100px;">
-                            {{ formatPrice(19716) }}
+                            {{ formatMoney(this.totalDepreciation) }}
                         </td>
                         <td class="text-align-right fw-700" style="width: 100px;">
-                            {{ formatPrice(229284) }}
+                            {{ formatMoney(this.totalCostRemain) }}
                         </td>
                         <td class="text-align-centre" style="width: 100px;"></td>
                     </tr>
                 </tfoot>
             </table>
+            <v-contextmenu ref="contextmenu">
+                <v-contextmenu-item @click="btnAddAsset">Thêm mới</v-contextmenu-item>
+                <v-contextmenu-item @click="rowDoubleClick(assetRightClick)">Sửa</v-contextmenu-item>
+                <v-contextmenu-item @click="deleteOne(assetRightClick.fixed_asset_id)">Xóa</v-contextmenu-item>
+                <v-contextmenu-item @click="showFormDuplicate(assetRightClick)">Nhân bản</v-contextmenu-item>
+            </v-contextmenu>
         </div> 
-        <d-toast-message v-show="isShowToast" @saveData="saveDataDetail"></d-toast-message> 
+        
+        <d-toast-message v-if="isShowToast" :text="textToast"></d-toast-message> 
         <d-dialog v-if="isShowDialog" 
         :title="titleDialogDetail" 
         :activeBtn1="activeBtnDialog1"
@@ -180,7 +185,7 @@
     </div>
     <asset-detail v-if="isShow" 
     @closeForm="closeFormDetail" 
-    :assetSelected="assSlected" 
+    :assetSelected="assetSelected" 
     :titleForm="this.titleForm" 
     :formMode="formModeDetail"></asset-detail>
     <div v-if="isLoading" class="loading">
@@ -189,6 +194,8 @@
             <div class="circle circle-2"></div>
         </div>
     </div>
+    
+    <div v-if="isNoData" class="noData"></div>
 </template>
 
 <script>
@@ -201,15 +208,24 @@ import DDialog from '@/components/base/DDialog.vue';
 import Resource from '@/js/resource.js';
 import Enum from '@/js/enum.js'
 
+import { directive, Contextmenu, ContextmenuItem } from "v-contextmenu";
+import "v-contextmenu/dist/themes/default.css";
+import formatPrice from "../../../js/utils.js"
+
 export default {
     name: 'WorkspaceJsonAssetList',
+    directives: {
+    contextmenu: directive,
+  },
     components: {
     DToolTip,
     AssetDetail,
     DFunctionIcon,
     DToastMessage,
     DCombobox,
-    DDialog
+    DDialog,
+    [Contextmenu.name]: Contextmenu,
+    [ContextmenuItem.name]: ContextmenuItem,
 },
     created() {
         this.selectPage(0); 
@@ -226,23 +242,21 @@ export default {
 
     data() {
         return {
-            items: ['Gaming', 'Programming', 'Vue', 'Vuetify'],
-            model: ['Vuetify'],
-            search: null,
-
+            // disable btn toolbar
+            isDisableBtnToolbar: false,
             // url
-            urlGetDataAssetCategory: Resource.API.AssetCategory.GET.AllAssetCategory,
-            urlGetDataDepartment: Resource.API.Department.GET.AllDepartment,
+            urlGetDataAssetCategory: Resource.API.AssetCategory.GET.FilterAssetCategory,
+            urlGetDataDepartment: Resource.API.Department.GET.FilterDepartment,
             urlGetDataFromApi: Resource.API.Asset.GET.FilterAsset,
             // Lưu dữ liệu từ api
-            assSlected: {},
+            assetSelected: {},
             assets: [],
+            assetRightClick: {},
             // Lưu dữ liệu id khi checkbox
             listIdAsset: [],
-            // Lưu keyCode
-            keyCodeData: [],
             // Sử dụng để hiển thị
             isLoading: false,
+            isNoData: false,
             isShow: false,
             isShowToast: false,
             isShowDialog: false,
@@ -254,11 +268,14 @@ export default {
             upHerePageNumberLast: false,
             selectAll: false,
             activeBtnDialog1: true,
+            isSelectRowTable: false,
+            statusBackEnd: false,
             // Title
             titleForm: '', 
             titleDialogDetail: '',
             titleBtnDialog1: Resource.TitleBtnDialog.NoCancel.VI,
             titleBtnDialog3: Resource.TitleBtnDialog.Delete.VI,
+            textToast: '',
             // phân trang
             currentPage: '',
             isShowLimit: false,
@@ -268,9 +285,14 @@ export default {
             pageSizes: [15, 20, 25, 30, 40],
             // Lọc 
             keyword: '',
+            getFilter: [],
             filterAssetCategory: '',
             filterDepartment: '',
             totalCount: '',
+            totalQuantity: '',
+            totalCost: '',
+            totalDepreciation: '',
+            totalCostRemain: '',
             // Form mode
             formModeDetail: '',
         };
@@ -279,17 +301,40 @@ export default {
     unmounted() {
         
     },
+
+    mounted() {
+        this.$refs.focusRow.focus()
+    },
     
     computed: {
-       
+      
     },
 
     watch: {
-        model (val) {
-        if (val.length > 5) {
-          this.$nextTick(() => this.model.pop())
-        }
-      },
+        /**
+         * Khi thay đổi lựa chọn lọc bộ phận sử dụng, tự động load lại dữ liệu
+         * Author: DVDUNG (4/10/2022)
+         */
+        filterDepartment() {
+            this.selectPage(0)
+        },
+
+        /**
+         * Khi thay đổi lựa chọn lọc loại tài sản, tự động load lại dữ liệu
+         * Author: DVDUNG (4/10/2022)
+         */
+        filterAssetCategory() {
+            this.selectPage(0)
+        },
+
+        // /**
+        //  * Khi thay đổi lựa chọn lọc từ khóa, tự động load lại dữ liệu
+        //  * Author: DVDUNG (4/10/2022)
+        //  */ 
+        // keyword() {
+        //     this.selectPage(0)
+        // },
+        
     },
     
     methods: {
@@ -297,8 +342,8 @@ export default {
          * Sự kiện khi sử dụng bàn phím
          * Author: DVDUNG (1/10/2022)
          */
-        keyDownBtn(event) {
-            console.log(event.keyCode)
+        keyDownBtn(event)  {
+            // console.log(event.keyCode)
             // Bấm Insert để mở form thêm mới tài sản
             if (event.keyCode == Enum.KeyCode.INSERT) {
                 this.btnAddAsset()
@@ -313,22 +358,6 @@ export default {
             if (event.keyCode == Enum.KeyCode.ENTER) {
                 this.closeDialog()
             }
-
-            // Bấm Ctrl + S để lưu tài sản
-            if (event.keyCode == Enum.KeyCode.CTRL) {
-                this.keyCodeData.push(event.keyCode)
-                event.stopPropagation();
-            } 
-            else if (event.keyCode == Enum.KeyCode.ENTER) {
-                    if (this.keyCodeData[0] == Enum.KeyCode.CTRL) {
-                        this.keyCodeData.push(event.keyCode)
-                        console.log('lưu dữ liệu')
-                        this.keyCodeData = []   
-                    } else this.keyCodeData = []
-                } 
-                else {
-                    this.keyCodeData = []
-                }
         },
 
         /** Hiện pop-up thêm tài sản
@@ -336,7 +365,7 @@ export default {
          */
         btnAddAsset() {
             this.isShow = true;
-            this.assSlected = {};
+            this.assetSelected = {};
             this.titleForm = Resource.TitleFormPopup.FormAddAsset.VI;
             this.formModeDetail = Enum.FormMode.Add;
         },
@@ -346,32 +375,30 @@ export default {
          * Hiện pop-up chỉnh sửa tài sản
          * Author: DVDUNG (19/09/2022)
          */
-        rowDoubleClick(fixed_asset_id) {
-            this.assSlected = fixed_asset_id,
-            // console.log(this.assSlected)
+        rowDoubleClick(asset) {
+            console.log({asset})
+            this.assetSelected = asset,
+            // console.log(this.assetSelected)
             this.isShow = true;
             this.titleForm = Resource.TitleFormPopup.FormUpdateAsset.VI;
             this.formModeDetail = Enum.FormMode.Edit;
         },
-        
-        // /**
-        //  * Hiện pop-up chỉnh sửa tài sản
-        //  * Author: DVDUNG (19/09/2022)
-        //  */   
-        // showFormChangeDetail(asset) {
-        //     // this.isShow = true;
-        //     // this.titleForm = Resource.TitleFormPopup.FormUpdateAsset.VI;
-        //     // this.formModeDetail = Enum.FormMode.Edit
-        //     this.rowDoubleClick(asset)
-        // },
 
+        /**
+         * Lấy dữ liệu khi click chuột phải vào row
+         * Author: DVDUNG (16/07/2022)
+         */
+        rightClickRow(asset) {
+            this.assetRightClick = asset
+        },
+        
         /**
          * Hiện pop-up nhân bản tài sản
          * Author: DVDUNG (19/09/2022)
          */
-        showFormDuplicate(fixed_asset_id) {
+        showFormDuplicate(asset) {
             this.isShow = true;
-            this.rowDoubleClick(fixed_asset_id)
+            this.rowDoubleClick(asset)
             this.titleForm = Resource.TitleFormPopup.FormDuplicateAsset.VI;
             this.formModeDetail = Enum.FormMode.Duplicate
         },
@@ -382,17 +409,10 @@ export default {
          */
         closeFormDetail() {
             this.isShow = false
+            this.selectPage(0)
+            this.$refs.focusRow.focus()
         },
 
-        /**
-         * Lưu tài sản
-         * Author: DVDUNG (19/09/2022)
-         */
-        saveDataDetail() {
-            this.isShowToast = true;
-            console.log(this.isShowToast)
-        },
-        
         /**
          * Xóa tài sản
          * Author: DVDUNG (21/09/2022)
@@ -402,9 +422,10 @@ export default {
                 this.activeBtnDialog1 = false;
                 this.titleDialogDetail = Resource.TitleDialog.DeleteNoData.VI;
                 this.titleBtnDialog3 = Resource.TitleBtnDialog.Close.VI
-                console.log(this.titleDialogDetail)
+                // console.log(this.titleDialogDetail)
             }
             if (this.listIdAsset.length == 1) {
+                this.activeBtnDialog1 = true;
                 this.titleBtnDialog1 = Resource.TitleBtnDialog.NoCancel.VI
                 this.titleBtnDialog3 = Resource.TitleBtnDialog.Delete.VI
                 this.titleDialogDetail = Resource.TitleDialog.DeleteOneAsset.VI + ` <b>${this.listIdAsset.length}</b> không?`
@@ -412,7 +433,13 @@ export default {
             if ((this.listIdAsset.length > 1)) {
                 this.titleDialogDetail = `<b>${this.listIdAsset.length}</b> ` + Resource.TitleDialog.DeleteMultiple.VI
             }
+            this.textToast = Resource.TextToast.Success.Delete.VI
             this.isShowDialog = true;
+        },
+
+        deleteOne(id) {
+            this.listIdAsset.push(id);
+            this.deleteAsset()
         },
 
         /**
@@ -421,6 +448,7 @@ export default {
          */
         closeDialog() {
             this.isShowDialog = false;
+
         },
 
         /**
@@ -428,7 +456,7 @@ export default {
          * --> Đóng dialog và xóa tài sản
          * Author: DVDUNG (21/09/2022)
          */
-        destroys() {
+        destroyForm() {
             var url = Resource.API.Asset.DELETE.DeleteOne
             var method = Resource.Method.DELETE
             if (this.listIdAsset.length == 1) {
@@ -436,34 +464,85 @@ export default {
                 console.log(this.listIdAsset[0])
                 console.log(url)
             }
-            fetch(url, {method: method, 
-                headers:{ 'Content-Type': 'application/json'}, 
-                body: JSON.stringify(this.assetData)})
-            .then(res => res.json())
-            .then(res =>{
-                console.log(res.status)
-                this.isShowDialog = false;
-            })
-            .catch(res => {
-                console.log(res);
-            })
-            this.isShowDialog = false;
-           
+            if (this.listIdAsset.length > 1) {
+                url = Resource.API.Asset.DELETE.DeleteMultiple
+                method = Resource.Method.POST
+            }
+            // if (this.statusBackEnd) {
+            // }
+            this.callApiDelete(url, method)
         },
 
-        /**
-         * Format dữ liệu
-         * Author: DVDUNG (19/09/2022)
-         * @param {*} value 
-         */
-        //    Format money
-        formatPrice(value) {
+        callApiDelete(url, method) {
             try {
-                let val = (value/1).toFixed(3).replace('.', '.')
-            return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")
+                fetch(url, {method: method, 
+                headers:{ 'Content-Type': 'application/json'}, 
+                body: JSON.stringify(this.listIdAsset)})
+                .then((res) => {
+                    var status = res.status
+                        switch(status) {
+                            case 200: 
+                                this.listIdAsset = []  
+                                break
+                            case 400:
+                                this.statusBackEnd = false  
+                                this.titleBtnDialog3 = Resource.TitleBtnDialog.Close.VI
+                                this.activeBtnDialog1 = false
+                                this.activeBtnDialog2 = false
+                                this.titleDialogDetail = Resource.TitleDialog.BackEnd400
+                                this.isShowDialog = true
+                                break
+                            case 404:
+                                this.statusBackEnd = false 
+                            this.titleBtnDialog3 = Resource.TitleBtnDialog.Close.VI
+                                this.activeBtnDialog1 = false
+                                this.activeBtnDialog2 = false
+                                this.titleDialogDetail = Resource.TitleDialog.BackEnd404
+                                this.isShowDialog = true
+                                break
+                            case 500:
+                                this.statusBackEnd = false 
+                                this.titleBtnDialog3 = Resource.TitleBtnDialog.Close.VI
+                                this.activeBtnDialog1 = false
+                                this.activeBtnDialog2 = false
+                                this.titleDialogDetail = Resource.TitleDialog.BackEnd500
+                                this.isShowDialog = true
+                                break
+                            default: 
+                                this.isShowDialog = false;
+                            res.json()
+                        }
+                })
+                .then(() =>{
+                })
+                .catch((res) => {
+                    console.log(res);
+                })
+                .finally(() => {
+                    this.isShowDialog = false;
+                    this.selectPage(0)
+            })
             } catch (error) {
-                console.log(error);
+                console.log(error.message)
             }
+        },
+
+        // /**
+        //  * Format dữ liệu
+        //  * Author: DVDUNG (19/09/2022)
+        //  * @param {*} value 
+        //  */
+        // //    Format money
+        formatMoney(value) {
+           return formatPrice(value)
+        },
+     
+
+        selectRowTable() {
+            if (event.currentTarget.classList.contains("focusRowOnClick")) {
+                event.currentTarget.classList.remove("focusRowOnClick");
+            } 
+            else event.currentTarget.classList.add("focusRowOnClick");
         },
 
         /**
@@ -473,11 +552,11 @@ export default {
          */
       
         filterCheckbox(id) {
-            // console.log(id);
             try {
                 for (let checkId of this.listIdAsset) {
                 // console.log(checkId)
                 if (id == checkId) {
+                    // console.log(checkId)
                     return true;
                 }
             }
@@ -542,12 +621,20 @@ export default {
          */
         selectPage(page) {
             try {
-                console.log('đây là category',this.filterAssetCategory)
-
+                this.getFilter = []
                 this.offset = (page)*this.limit
-                this.urlGetDataFromApi=Resource.API.Asset.GET.FilterAsset +`&keyword=${this.keyword}&assetCategoryID=${this.filterAssetCategory}&departmentID=${this.filterDepartment}&offset=${this.offset}&limit=${this.limit}`
-              
-                console.log(this.urlGetDataFromApi)
+                if (this.keyword != null) {
+                    this.getFilter.push(`keyword=${this.keyword}`)
+                }
+                if (this.filterAssetCategory != null) {
+                    this.getFilter.push(`assetCategoryID=${this.filterAssetCategory}`)
+                }
+                if (this.filterDepartment != null) {
+                    this.getFilter.push(`departmentID=${this.filterDepartment}`)
+                }
+                var filter = this.getFilter.join('&')
+                this.urlGetDataFromApi=Resource.API.Asset.GET.FilterAsset +`${filter}&offset=${this.offset}&limit=${this.limit}`
+                // console.log(this.urlGetDataFromApi)
                 this.isLoading = true;
                 fetch(this.urlGetDataFromApi, {method: "GET"})
                 .then(res=>res.json())
@@ -555,7 +642,19 @@ export default {
                     this.assets = data.data
                     this.totalCount = data.totalCount
                     this.pageCount = data.totalCount/this.limit
+                    this.totalQuantity = data.totalQuantity
+                    this.totalCost = data.totalCost
+                    this.totalDepreciation = data.totalDepreciation
+                    this.totalCostRemain = data.totalCostRemain
                     this.isLoading = false
+                    if (data.totalCount == 0) {
+                        this.isDisableBtnToolbar = true
+                        this.isNoData = true
+                    }
+                    else {
+                        this.isNoData = false
+                        this.isDisableBtnToolbar = false
+                    } 
                     console.log(data)
                 })
                 .catch(res=>{
@@ -566,6 +665,12 @@ export default {
                 console.log(error)
             }
         },
+        
+        // arrowRow(e) {
+        //     if(e.keyCode == Enum.KeyCode.TAB) {
+        //         e.nextElementSibling.focus()
+        //     }
+        // },
 
         /**
          * Lấy id loại tài sản từ combobox
@@ -582,7 +687,6 @@ export default {
         getIdDataDepartment(id) {
             this.filterDepartment = id 
         }
-        
     },
     
 };
@@ -598,10 +702,24 @@ export default {
     @import url('../../../css/base/paging.css');
     @import url('../../../css/base/loading.css');
     
+    .btn__toolbar--disable {
+        cursor: not-allowed !important;
+        opacity: 0.5 !important;
+    }
 
 .isSelectRow {
     background-color: #d1edf4;
 }
+
+.v-contextmenu-item {
+    font-family: MISA !important;
+}
+
+.v-contextmenu-item:hover {
+    background-color: #d1edf4 !important;
+    color: #000
+}
+
 </style>
 
 

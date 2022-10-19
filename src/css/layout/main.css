@@ -13,13 +13,6 @@
 @import url('../layout/header.css');
 @import url('../layout/navbar.css');
 
-/* @import url("/css/layout/header.css"); */
-
-
-/* @import url(/js/combobox/css/combobox.css); */
-
-
-
 body {
     margin: 0;
     font-family: MISA;
@@ -31,7 +24,11 @@ body {
 
 @font-face {
     font-family: MISA;
-    src: url('../../assets/font/dist/86035194a2ecaec2e33d6deae8ecf2ab.eot');
+    src: url('./assets/font/roboto/Roboto-Regular.ttf');
+}
+
+input {
+    font-family: MISA;
 }
 
 

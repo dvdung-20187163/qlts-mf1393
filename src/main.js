@@ -4,9 +4,10 @@ import ElementPlus from 'element-plus'
 import 'element-plus/dist/index.css'
 import vi from 'element-plus/es/locale/lang/vi'
 import VueMask from '@devindex/vue-mask';
+import contextmenu from "v-contextmenu";
+import "v-contextmenu/dist/themes/default.css";
 import AssetList from './components/views/assets/AssetList.vue'
 import { createRouter, createWebHistory } from 'vue-router'
-
 const routers= [
   {path: "", component: AssetList},
   { path: "/tong-quan", component: AssetList }, 
@@ -27,6 +28,7 @@ const app = createApp(App)
 app.use(ElementPlus, {
   locale: vi,
 })
+app.use(contextmenu);
 app.use(VueMask);
 app.use(router);
 app.mount('#app')

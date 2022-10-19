@@ -42,8 +42,7 @@
                     <div class="navbar-title__icon-down"></div>
                 </div>
             </router-link>
-            <router-link to="" class="navbar-item" 
-            @mouseover="upHereIconCategory = true" @mouseleave="upHereIconCategory = false">
+            <router-link to="" class="navbar-item">
                 <div class="navbar-icon icon-category">
                     <d-tool-tip :class="{ 'tooltip-hidden': !activeNav }" class="margin-nav-item" v-show="upHereIconCategory" text="Danh mục"></d-tool-tip>
                 </div>

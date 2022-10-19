@@ -1,5 +1,10 @@
+const API_URL = process.env.API_URL
+
 export default {
     ErrorValidate: {
+        Header: {
+            VI: "Dữ liệu đầu vào không hợp lệ"
+        },
         AssetName: {
             VI: "Cần phải nhập tên tài sản",
             EN: "Asset name is not empty"
@@ -12,7 +17,7 @@ export default {
             VI: "Cần phải nhập mã bộ phận sử dụng",
             EN: "Department code is not empty"
         },
-        AssetCategoryCOde: {
+        AssetCategoryCode: {
             VI: "Cần phải nhập mã loại tài sản",
             EN: "Asset category code number is not empty"
         },
@@ -25,6 +30,9 @@ export default {
         DepreciationRate: {
             VI: "Cần phải nhập tỷ lệ hao mòn"
         },
+        CompareDepreciationRate: {
+            VI: "Tỷ lệ hao mòn phải bằng 1/số năm sử dụng"
+        },
         PurchaseDate: {
             VI: "Cần phải nhập ngày mua"
         },
@@ -36,8 +44,15 @@ export default {
         },
         DepreciationYear: {
             VI: "Cần phải nhập giá trị hao mòn năm"
-        } 
+        },
+        CompareDepreciationYear: {
+            VI: "Giá trị hao mòn năm phải nhỏ hơn nguyên giá"
+        },
+        DuplicateCode: {
+            VI: "Mã tài sản đã tồn tại"
+        }
     },
+    
     TitleFormPopup: {
         FormAddAsset: {
             VI: "Thêm mới tài sản",
@@ -75,7 +90,15 @@ export default {
         SaveUpdate: {
             VI: "Thông tin thay đổi sẽ không được cập nhật nếu bạn không lưu. Bạn có muốn lưu các thay đổi này?"
         },
-       
+        BackEnd400: {
+            VI: "Dữ liệu đầu vào ko hợp lệ"
+        },
+        BackEnd404: {
+            VI: "Phương thức yêu cầu của bạn không hợp lệ hoặc không được cho phép tại server"
+        },
+        BackEnd500: {
+            VI: "Lỗi phía Serve"
+        }
     },
     TitleBtnDialog: {
         Cancel: {
@@ -100,30 +123,33 @@ export default {
     API: {
         Asset: {
             GET: {
-                AllAsset: "https://localhost:7143/api/v1/Assets",
-                AssetById: "https://localhost:7143/api/v1/Assets/",
-                MaxCode: "https://localhost:7143/api/v1/Assets/get-max-code",
-                FilterAsset: "https://localhost:7143/api/v1/Assets/filter?",
+                AllAsset: `${API_URL}/Assets`,
+                AssetById: `${API_URL}/Assets`,
+                MaxCode: `${API_URL}/Assets/maxCode`,
+                FilterAsset: `${API_URL}/Assets/filters?`,
+                DuplicateCode: `${API_URL}/Assets/duplicate-code/`,
             },
             POST: {
-                InsertOne: "https://localhost:7143/api/v1/Assets",
+                InsertOne: `${API_URL}/Assets`,
             },
             PUT: {
-                UpdateOne: "https://localhost:7143/api/v1/Assets/",
+                UpdateOne: `${API_URL}/Assets`,
             },
             DELETE: {
-                DeleteOne: "https://localhost:7143/api/v1/Assets/",
-                DeleteMultiple: ""
+                DeleteOne: `${API_URL}/Assets/`,
+                DeleteMultiple: `${API_URL}/Assets/batch-delete`
             }
         },
         Department: {
             GET: {
-                AllDepartment: "https://localhost:7143/api/v1/Departments",
+                AllDepartment: `${API_URL}/Departments`,
+                FilterDepartment: `${API_URL}/Departments/filter`
             },
         },
         AssetCategory: {
             GET: {
-                AllAssetCategory: "https://localhost:7143/api/v1/AssetCategorys"
+                AllAssetCategory: `${API_URL}/AssetCategorys/filters`,
+                FilterAssetCategory: `${API_URL}/AssetCategorys/filter`
             }
         }
     },
@@ -132,6 +158,22 @@ export default {
         PUT: "PUT",
         POST: "POST",
         DELETE: "DELETE",
+    },
+    TextToast: {
+        Success: {
+            Save: {
+                VI: 'Lưu dữ liệu thành công'
+            },
+            Delete: {
+                VI: 'Xóa dữ liệu thành công'
+            },
+            Update: {
+                VI: 'Cập nhật dữ liệu thành công'
+            },
+            Cancel: {
+                VI: 'Hủy tác vụ thành công'
+            }
+        }
     }
 
 }

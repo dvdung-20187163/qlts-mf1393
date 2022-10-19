@@ -17,9 +17,15 @@
     max-width: 400px;
     border-radius: 4px;
     box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.15);
-    padding: 36px 18px 18px 24px;
+    padding: 24px;
     background-color: #fff;
     z-index: 10;
+}
+
+.header {
+    font-weight: 700;
+    font-size: 20px;
+    padding-bottom: 24px;
 }
 
 .dialog__main {
@@ -37,7 +43,6 @@
     height: 36px;
     background-color: #fff;
     margin-right: 20px;
-
     background: url("../../assets/icon/qlts-icon.svg") no-repeat -410px -59px;
 }
 
@@ -49,5 +54,9 @@
     display: flex;
     justify-content: end;
     align-items: center;
-    margin-top: 16px;
+    margin-top: 24px;
+}
+
+.hidden {
+    opacity: 0;
 }

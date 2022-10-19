@@ -2,17 +2,27 @@
     <div style="position:relative">
         <div id="" class="combobox">
             <div class="combobox-icon icon-filter" ></div>
-            <input type="text" class="combobox-text" 
+            <input type="text" class="combobox-text" maxlength="50"
             ref="inputData" 
             :placeholder="this.text"
-            @mouseleave="leaveInput">
-            <button class="select-icon--down" @click="showData"></button>
+            @focus="focusInput"
+            v-model="dataShowCombobox"
+            >
+            <button class="select-icon--down" tabindex="-1" @click="showData">
+                <el-tooltip content="abc" placement="top" >
+            </el-tooltip>
+        </button>
         </div>
-        <div class="combobox__data" v-show="isShowData" @mouseleave="leaveInput">
-            <div class="combobox__item"
+        <div class="combobox__data" v-show="isShowData"  @mouseleave="leaveInput">
+            <button class="combobox__item btn-combobox"
             v-for="(data) in dataCombobox" :key="data[keyCombobox]" 
             @click="selectData(data[DataComboboxName], data[keyCombobox])"
-            >{{data[DataComboboxName]}}</div>
+            > 
+            
+            <span>{{data[DataComboboxName]}}</span>
+            
+            </button>
+        <input type="text" class="inputKey" @keydown.tab="rollTab">
         </div>
     </div>
 </template>
@@ -22,15 +32,8 @@ export default {
     name: 'WorkspaceJsonDCombobox',
     
     created() {
-        fetch(this.api, {method: "GET"})
-        .then(res=>res.json())
-        .then(data=> {
-            this.dataCombobox = data
-            // console.log(this.dataCombobox);
-        })
-        .catch(res=>{
-            console.log(res);
-        });
+        this.getApi = this.api
+        this.callAPI()
     },
     props: ["id", "api", "text","keyCombobox", "DataComboboxName"],
 
@@ -38,6 +41,8 @@ export default {
         return {
             dataCombobox: [],
             isShowData: false,
+            dataShowCombobox: '',
+            getApi: '',
         };
     },
 
@@ -45,14 +50,40 @@ export default {
         
     },
 
+    watch: {
+        dataShowCombobox() {
+            this.callAPI()
+        }
+    },
+
     methods: {
+        /**
+         * APi lọc theo auto complete
+         * Author: DVDUNG (5/10/2022)
+         */
+        callAPI() {
+        let getFilter = []
+            if (this.dataShowCombobox != null) {
+                getFilter.push(`?name=${this.dataShowCombobox}`)
+            }
+        let filter = getFilter.toString()
+        let url = this.getApi + `${filter}`
+        let method = 'GET'
+        fetch(url, { method: method })
+            .then((res) => res.json())
+            .then((data) => {
+            this.dataCombobox = data;
+            })
+            .catch((res) => {
+            console.log(res);
+            });
+        },
         /**
          * Hiện data lấy từ api
          * Author: DVDUNG (21/09/2022)
          */
         showData() {
             this.isShowData = !this.isShowData;
-            console.log(this.isShowData)
         },
 
         /**
@@ -61,17 +92,33 @@ export default {
          * @param {} selectData 
          */
         selectData(selectData, id) {
-            this.$refs.inputData.value = selectData;
+            this.dataShowCombobox = selectData;
             this.$emit('getIdData', id)
             this.isShowData = false;
         },
 
         /**
-         * Khi chuột dời khỏi combobox thì data sẽ ẩn đi
+         * Khi chuột rời khỏi combobox thì data sẽ ẩn đi
          * Author: DVDUNG (21/09/2022)
          */
-        leaveInput() {
+         leaveInput() {
             this.isShowData = false;    
+        },
+
+        /**
+         * Khi focus vào input thì hiện data 
+         * Author: DVDUNG (5/10/2022)
+         */
+        focusInput() {
+            this.isShowData = true;
+        },
+
+        /**
+         * Roll tab về ban đầu khi ấn đến lựa chọn cuối
+         * Author: DVDUNG (5/10/2022)
+         */
+        rollTab() {
+        this.$refs.inputData.focus()
         }
     },
 };
@@ -85,7 +132,6 @@ export default {
     /* border: 1px solid rgb(50, 40, 121); */
     box-sizing: border-box;
     display: flex;
-    
 }
 
 .combobox-icon {
@@ -145,22 +191,39 @@ input::placeholder {
     z-index: 21;
 }
 
+.btn-combobox {
+  width: 100%;
+  border: none;
+  /* border-bottom: 1px solid #afafaf; */
+  outline: none;
+  text-align: left;
+  background: #fff;
+
+  
+}
+
+.btn-combobox:focus {
+  background-color: #d1edf4;
+}
+
 .combobox__item {
     height: 36px;
     display: flex;
     align-items: center;
-    padding-left: 56px;
+    padding-left: 20px;
     color: #000;
     z-index: 100;
+    white-space: nowrap;
+    overflow: hidden;
+    box-sizing: border-box;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
 }
 
 .combobox__item:hover {
-    background-color: #cccc;
-    background-image: url('../../assets/img/check-mark-16.png');
-    background-repeat: no-repeat;
-    background-position: 16px center;
-    background-color: #109160;
-    color: #fff;
+    background-color: #d1edf4;
 }
 
 .icon-filter {
@@ -168,5 +231,10 @@ input::placeholder {
     height: 24px;
     background: url("../../assets/icon/qlts-icon.svg") no-repeat -240px -65px;
     cursor: pointer;
+}
+
+.inputKey {
+  opacity: 0;
+  height: 1px;
 }
 </style>
